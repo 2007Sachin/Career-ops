@@ -28,6 +28,14 @@ function LoginForm() {
     if (params.get("signup") === "true") setMode("signup");
   }, [params]);
 
+  const switchRole = (newRole: Role) => {
+    setRole(newRole);
+    resetError();
+    const sp = new URLSearchParams(params.toString());
+    sp.set("role", newRole);
+    router.replace(`/login?${sp.toString()}`);
+  };
+
   const [checkEmail, setCheckEmail] = useState(false);
 
   const resetError = () => setError("");
@@ -183,7 +191,7 @@ function LoginForm() {
           {/* Role toggle */}
           <div className="bg-white rounded-2xl border border-slate-200 p-1.5 flex mb-8 shadow-sm">
             <button
-              onClick={() => { setRole("candidate"); resetError(); }}
+              onClick={() => switchRole("candidate")}
               className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all ${
                 isCandidate
                   ? "bg-[#1e3060] text-white shadow-md shadow-[#1e3060]/20"
@@ -193,7 +201,7 @@ function LoginForm() {
               <Bot className="w-4 h-4" /> Candidate
             </button>
             <button
-              onClick={() => { setRole("recruiter"); resetError(); }}
+              onClick={() => switchRole("recruiter")}
               className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all ${
                 !isCandidate
                   ? "bg-[#1e3060] text-white shadow-md shadow-[#1e3060]/20"
